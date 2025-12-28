@@ -96,53 +96,98 @@ MIT © Acquibi
 
 
 
-## 💻 Installation
+## Installation
 
-1. Clone the repository:
+I understand — you want the entire content as a single, consolidated Markdown block. Here is the complete consolidated version:
+
+````markdown
+# Explain My Repo
+
+## Installation
+
+Clone the repository and navigate into it:
 
 ```bash
 git clone <repo_url>
 cd explain_my_repo
+```
+
 Install dependencies:
 
-bash
-Copier le code
+```bash
 pip install -r requirements.txt
+```
+
 Or install the package directly:
 
-bash
-Copier le code
+```bash
 pip install -e .
-🔑 OpenAI API Key Management
+```
+
+### Step-by-step installation (recommended)
+
+1. Create and activate a virtual environment:
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+```
+
+2. Upgrade pip and install dependencies:
+
+```bash
+pip install --upgrade pip
+pip install -r requirements.txt
+```
+
+3. (Optional) Install the package in editable mode:
+
+```bash
+pip install -e .
+```
+
+4. Verify installation by running the CLI on the included example:
+
+```bash
+explain_repo --local ./examples/sample_repo
+```
+
+This will print a repository summary and generate a Graphviz file (`structure.gv`).
+
+## OpenAI API Key Management
+
 To generate summaries, Explain My Repo uses the OpenAI API. For security reasons, never hardcode your API key in the code.
 
-Get your OpenAI API key from https://platform.openai.com.
+Get your OpenAI API key from [OpenAI Platform](https://platform.openai.com) and set it as an environment variable before running the program:
 
-Set it as an environment variable before running the program:
-
-bash
-Copier le code
+```bash
 export OPENAI_API_KEY="your_personal_key"
+```
+
 ⚠️ Never share this key publicly. If your key is exposed, revoke it immediately from your OpenAI dashboard.
 
-⚙️ Usage
-Analyze a local repository
-bash
-Copier le code
+## Usage
+
+Analyze a local repository:
+
+```bash
 explain_repo --local ./examples/sample_repo
-Analyze a remote GitHub repository
-bash
-Copier le code
+```
+
+Analyze a remote GitHub repository:
+
+```bash
 explain_repo --url https://github.com/user/project
+```
+
 The program will output:
 
-A text summary of the project
+* A text summary of the project
+* A diagram file `repo_structure.gv.pdf` generated via Graphviz
 
-A diagram file repo_structure.gv.pdf generated via Graphviz
+## Project Structure
 
-📂 Project Structure
-arduino
-Copier le code
+```
 explain_my_repo/
 │
 ├── explain_my_repo/
@@ -160,105 +205,127 @@ explain_my_repo/
 ├── setup.py
 ├── README.md
 └── .gitignore
-🧩 Technical Details
-analyzer.py
-Scans all repository files
+```
 
-Detects:
+## Technical Details
 
-Languages (.py, .js, etc.)
+**analyzer.py**
 
-Python functions (def ...)
+* Scans all repository files
+* Detects:
 
-Python classes (class ...)
+  * Languages (.py, .js, etc.)
+  * Python functions (`def ...`)
+  * Python classes (`class ...`)
+* Returns a dictionary analysis
 
-Returns a dictionary analysis
+**summarizer.py**
 
-summarizer.py
-Uses openai to generate a summary
+* Uses OpenAI to generate a summary
+* Reads the API key securely via `os.getenv("OPENAI_API_KEY")`
+* Includes an example key `EXAMPLE_KEY` for demonstration only (never commit this)
+* Prompt includes languages, number of files, functions, and classes
 
-Reads the API key securely via os.getenv("OPENAI_API_KEY")
+**visualizer.py**
 
-Includes an example key EXAMPLE_KEY for demonstration only (never commit this)
+* Generates a simple diagram of files and classes
+* Uses Graphviz to produce PDF/PNG
 
-Prompt includes languages, number of files, functions, and classes
+**cli.py**
 
-visualizer.py
-Generates a simple diagram of files and classes
+* Main command: `explain_repo`
+* Options:
 
-Uses Graphviz to produce PDF/PNG
+  * `--url` : remote GitHub repository
+  * `--local` : local repository
+* Displays summary and generates diagram
 
-cli.py
-Main command explain_repo
+## Testing
 
-Options:
+The `tests/` folder contains basic tests for:
 
---url : remote GitHub repository
-
---local : local repository
-
-Displays summary and generates diagram
-
-🧪 Testing
-The tests/ folder contains basic tests for:
-
-File, function, and class analysis (test_analyzer.py)
-
-Summary generation (test_summarizer.py)
+* File, function, and class analysis (`test_analyzer.py`)
+* Summary generation (`test_summarizer.py`)
 
 Run tests with:
 
-bash
-Copier le code
+```bash
 pytest tests/
-💡 Example Output
+```
+
+## Example Output
+
 Sample summary:
 
-vbnet
-Copier le code
+```
 This project is a REST API for managing tasks. It contains 5 Python files, 2 main classes, and 8 functions. Key modules: tasks.py, utils.py. The structure is simple and modular.
-Diagram repo_structure.gv.pdf visualizes files and classes.
+Diagram `repo_structure.gv.pdf` visualizes files and classes.
+```
 
-📌 GitHub Best Practices
-Never commit your OpenAI API key.
+## GitHub Best Practices
 
-Add .gitignore:
+* Never commit your OpenAI API key
+* Add `.gitignore`:
 
-bash
-Copier le code
+```
 __pycache__/
 *.pyc
 .env
 repo_structure.gv
-Use environment variables for the key
+```
 
-Test with examples/sample_repo/ before analyzing real repositories
+* Use environment variables for the key
+* Test with `examples/sample_repo/` before analyzing real repositories
 
-🛠️ Tech Stack
-Python 3.10+
+## Tech Stack
 
-click (CLI)
+* Python 3.10+
+* click (CLI)
+* tree_sitter (code parsing)
+* gitpython (remote repository)
+* graphviz (diagram generation)
+* openai (natural language summary)
+* rich (console formatting)
 
-tree_sitter (code parsing)
+## Useful Links
 
-gitpython (remote repository)
+* OpenAI: [https://platform.openai.com](https://platform.openai.com)
+* Graphviz: [https://graphviz.org](https://graphviz.org)
+* Python: [https://www.python.org](https://www.python.org)
 
-graphviz (diagram generation)
+## Author & Contact
 
-openai (natural language summary)
-
-rich (console formatting)
-
-🔗 Useful Links
-OpenAI: https://platform.openai.com
-
-Graphviz: https://graphviz.org
-
-Python: https://www.python.org
-
-👨‍💻 Author & Contact
 Developed by Acquibi.
 
 For professional inquiries, feedback, or collaborations:
+GitHub: [https://github.com/Acquibi](https://github.com/Acquibi)
 
-GitHub: https://github.com/Acquibi
+
+
+## Technical details
+
+- `analyzer.py` scans files, infers languages by extension, and parses Python files with `ast` to find functions and classes.
+- `summarizer.py` transforms the analysis into a prompt and calls the OpenAI client to generate a summary. The implementation supports modern OpenAI Python clients with a backward-compatible fallback.
+- `visualizer.py` builds a Graphviz directed graph linking files to class nodes.
+
+## Testing
+
+Run unit tests with pytest:
+
+```bash
+pytest -q
+```
+
+## Best practices
+
+- Never commit secrets or API keys. Use environment variables (e.g., `OPENAI_API_KEY`) or CI secrets.
+- Add `.env` or local files to `.gitignore` and keep any sensitive values out of the repository.
+
+## Tech stack
+
+- Python 3.10+
+- click (CLI), gitpython (clone), graphviz (visualization), openai (summaries), rich (console formatting)
+
+## Author & Contact
+
+Developed by Acquibi. See the project repo for contact information and issues.

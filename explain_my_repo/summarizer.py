@@ -16,32 +16,32 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 # The long example key has been redacted to avoid being detected as a secret by
 # repository push-protection. Keep API keys out of source code and use
 # `OPENAI_API_KEY` via environment variables or CI secrets instead.
-EXEMPLE_CLE = "EXAMPLE_KEY_REDACTED_DO_NOT_COMMIT"
+EXAMPLE_KEY = "EXAMPLE_KEY_REDACTED_DO_NOT_COMMIT"
 
 
 
 def _build_prompt(analysis: Dict[str, Any]) -> str:
     lines = []
-    lines.append(f"Résumé du dépôt à l'emplacement: {analysis.get('root')}")
-    lines.append(f"Nombre total de fichiers: {analysis.get('file_count')}")
-    lines.append("Langages détectés:")
+    lines.append(f"Repository path: {analysis.get('root')}")
+    lines.append(f"Total file count: {analysis.get('file_count')}")
+    lines.append("Detected languages:")
     for lang, count in analysis.get("languages", {}).items():
         lines.append(f"- {lang}: {count}")
     py = analysis.get("python", {})
-    lines.append(f"Fichiers Python: {py.get('file_count', 0)}")
-    lines.append(f"Total fonctions Python: {py.get('total_functions', 0)}")
-    lines.append(f"Total classes Python: {py.get('total_classes', 0)}")
-    lines.append("\nListe des fichiers Python et leurs fonctions/classes:")
+    lines.append(f"Python files: {py.get('file_count', 0)}")
+    lines.append(f"Total Python functions: {py.get('total_functions', 0)}")
+    lines.append(f"Total Python classes: {py.get('total_classes', 0)}")
+    lines.append("\nList of Python files and their functions/classes:")
     for fname, details in py.get("files", {}).items():
         funcs = details.get("functions", [])
         classes = details.get("classes", [])
-        lines.append(f"- {fname}: {len(funcs)} fonctions, {len(classes)} classes")
+        lines.append(f"- {fname}: {len(funcs)} functions, {len(classes)} classes")
         if funcs:
-            lines.append(f"  fonctions: {', '.join(funcs)}")
+            lines.append(f"  functions: {', '.join(funcs)}")
         if classes:
             lines.append(f"  classes: {', '.join(classes)}")
-    lines.append("\nGénère un résumé clair et concis en français expliquant la structure, "
-                 "les fichiers clés, et les éléments importants à connaître pour un développeur qui découvre le repo.")
+    lines.append("\nGenerate a clear and concise summary in English explaining the structure, "
+                 "the key files, and important details for a developer who is new to the repository.")
     return "\n".join(lines)
 
 
@@ -57,7 +57,7 @@ def summarize(analysis: Dict[str, Any], model: str = "gpt-3.5-turbo", max_tokens
     if dry_run:
         # Don't call OpenAI in tests or when explicitly requested.
         return (
-            "Résumé simulé (dry_run). "
+            "Simulated summary (dry_run). "
             "The real summary would be generated via the OpenAI API using the constructed prompt."
         )
 
@@ -72,7 +72,7 @@ def summarize(analysis: Dict[str, Any], model: str = "gpt-3.5-turbo", max_tokens
             response = client.chat.completions.create(
                 model=model,
                 messages=[
-                    {"role": "system", "content": "Tu es un assistant qui résume des projets de code en français."},
+                    {"role": "system", "content": "You are an assistant that summarizes code projects in English."},
                     {"role": "user", "content": prompt},
                 ],
                 max_tokens=max_tokens,
@@ -96,7 +96,7 @@ def summarize(analysis: Dict[str, Any], model: str = "gpt-3.5-turbo", max_tokens
                 response = openai.ChatCompletion.create(
                     model=model,
                     messages=[
-                        {"role": "system", "content": "Tu es un assistant qui résume des projets de code en français."},
+                        {"role": "system", "content": "You are an assistant that summarizes code projects in English."},
                         {"role": "user", "content": prompt},
                     ],
                     max_tokens=max_tokens,
@@ -105,7 +105,7 @@ def summarize(analysis: Dict[str, Any], model: str = "gpt-3.5-turbo", max_tokens
                 text = response.choices[0].message["content"].strip()
                 return text
             except Exception as exc:
-                return f"Erreur during OpenAI call (key present={bool(os.getenv('OPENAI_API_KEY'))}): {e_new}; fallback error: {exc}"
+                return f"Error during OpenAI call (key present={bool(os.getenv('OPENAI_API_KEY'))}): {e_new}; fallback error: {exc}"
     except Exception as exc:
         # Catch-all for unexpected errors
-        return f"Erreur during OpenAI call (key present={bool(os.getenv('OPENAI_API_KEY'))}): {exc}"
+        return f"Error during OpenAI call (key present={bool(os.getenv('OPENAI_API_KEY'))}): {exc}"

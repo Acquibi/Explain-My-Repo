@@ -15,21 +15,21 @@ def test_summarize_dry_run(tmp_path, monkeypatch):
     }
     # dry_run True should not call OpenAI
     out = summarize(analysis, dry_run=True)
-    assert "Résumé simulé" in out
+    assert "Simulated summary" in out
 
 
 def test_summarize_monkeypatched_openai(monkeypatch):
     # Monkeypatch the new OpenAI client (and fallback old API if present) to return a deterministic response
     import openai
     def fake_create(*args, **kwargs):
-        return DummyResponse("Résumé généré par test")
+        return DummyResponse("Generated summary by test")
 
     class FakeClient:
         class chat:
             class completions:
                 @staticmethod
                 def create(*a, **kw):
-                    return DummyResponse("Résumé généré par test")
+                    return DummyResponse("Generated summary by test")
 
     # Patch the OpenAI constructor to return our fake client
     monkeypatch.setattr(openai, "OpenAI", lambda *a, **kw: FakeClient())
@@ -45,4 +45,4 @@ def test_summarize_monkeypatched_openai(monkeypatch):
         "python": {"file_count": 2, "total_functions": 1, "total_classes": 1, "files": {}},
     }
     out = summarize(analysis, dry_run=False)
-    assert "Résumé généré par test" in out
+    assert "Generated summary by test" in out

@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 setup(
     name="explain-my-repo",
     version="0.1.0",
-    description="Analyse un repo et génère un résumé et un diagramme.",
+    description="Analyze a repository and generate a summary and a diagram.",
     packages=find_packages(),
     include_package_data=True,
     install_requires=[
