@@ -98,61 +98,57 @@ MIT © Acquibi
 
 ## Installation
 
-I understand — you want the entire content as a single, consolidated Markdown block. Here is the complete consolidated version:
+Follow these steps to install and verify Explain My Repo (recommended):
 
-````markdown
-# Explain My Repo
-
-## Installation
-
-Clone the repository and navigate into it:
+1. Clone the repository:
 
 ```bash
-git clone <repo_url>
-cd explain_my_repo
+git clone https://github.com/Acquibi/Explain-My-Repo.git
+cd Explain-My-Repo
 ```
 
-Install dependencies:
-
-```bash
-pip install -r requirements.txt
-```
-
-Or install the package directly:
-
-```bash
-pip install -e .
-```
-
-### Step-by-step installation (recommended)
-
-1. Create and activate a virtual environment:
+2. Create and activate a virtual environment:
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
 ```
 
-2. Upgrade pip and install dependencies:
+3. Upgrade pip and install dependencies:
 
 ```bash
 pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-3. (Optional) Install the package in editable mode:
+4. (Optional) Install the package in editable mode for development:
 
 ```bash
 pip install -e .
 ```
 
-4. Verify installation by running the CLI on the included example:
+5. Verify installation by running the CLI on the included example repository:
 
 ```bash
 explain_repo --local ./examples/sample_repo
 ```
 
-This will print a repository summary and generate a Graphviz file (`structure.gv`).
+This will print a repository summary and generate a Graphviz file (by default `structure.gv`; add `--render` to generate a PNG if Graphviz is installed).
+
+---
+
+## OpenAI API Key Management
+
+Explain My Repo uses the OpenAI API to generate natural-language summaries. For security:
+
+* Do not commit your API key in the code or repository.
+* Set it in your environment before running the CLI:
+
+```bash
+export OPENAI_API_KEY="your_personal_key"
+```
+
+If your key is ever exposed, revoke it via the OpenAI dashboard and rotate it immediately.
 
 ## OpenAI API Key Management
 
