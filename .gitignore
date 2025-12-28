@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env
+.envrc
+.venv/
+env/
+venv/
+
+# Packaging artifacts
+*.egg-info/
+explain_my_repo.egg-info/
+
+# Graphviz outputs
+*.gv
+*.png
+*.svg
+
+# Editor
+.vscode/
+.idea/
