@@ -1,40 +1,44 @@
-# Explain My Repo  
+# Explain My Repo
 
-[![CI](https://github.com/Acquibi/Explain-My-Repo/actions/workflows/ci.yml/badge.svg)](https://github.com/Acquibi/Explain-My-Repo/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE) [![Python](https://img.shields.io/badge/python-3.10%2B-blue)](https://www.python.org) [![PyPI (not published)](https://img.shields.io/badge/pypi-not%20published-lightgrey.svg)]()
+[![CI](https://github.com/Acquibi/Explain-My-Repo/actions/workflows/ci.yml/badge.svg)](https://github.com/Acquibi/Explain-My-Repo/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE) [![Python](https://img.shields.io/badge/python-3.10%2B-blue)](https://www.python.org)
 
+Short description
 
-A lightweight, fast tool to analyze any Git repository (local or remote) and instantly produce:
+Explain My Repo is a simple CLI tool that analyzes a Git repository (local or remote) and generates:
 
-- A concise, human-friendly natural language summary (via OpenAI)
-- A visual diagram of code structure (Graphviz)
-- CLI-first UX for quick, repeatable scans
+- A short natural-language summary (via OpenAI),
+- A simple Graphviz diagram showing files and class relationships,
+- A concise `analysis` dictionary suitable for automation or further processing.
 
-Explain My Repo helps engineers, auditors, and open-source explorers understand a codebase quickly — perfect for onboarding, code reviews, and quick audits. ✨
-
----
-
-<p align="center">
-  <img alt="demo gif" src="assets/demo.gif" width="640" />
-  
-  <sub>Demo GIF placeholder — add `assets/demo.gif` (short screen recording of `explain_repo --local ./examples/sample_repo`), convert to optimized GIF, and commit to show the project in action.</sub>
-</p>
+This repository contains a minimalist, well-tested implementation that you can install and run locally.
 
 ---
 
-## 🔍 Key Features
+## Description
 
-- Fast repository scan (files, folders, and languages)
-- Python AST-based detection of functions & classes
-- Natural-language summaries via OpenAI (secure: env var)
-- Graphviz visualizations (`.gv`, optional PNG render)
-- Simple CLI: `explain_repo --local <path>` or `--url <git-url>`
-- Lightweight, test-covered, easy to extend
+Explain My Repo scans a project and extracts structural information (files, languages, Python functions and classes). It then uses a text-generation model (OpenAI) to produce a human-readable summary and can render a visual diagram with Graphviz. The tool is intentionally small, portable, and easy to extend.
 
 ---
 
-## 🚀 Quick Start
+## How it works (project structure)
 
-Install:
+- `explain_my_repo/`
+  - `__init__.py` — package metadata
+  - `cli.py` — CLI (Click) that accepts `--local` and `--url` and orchestrates the workflow
+  - `analyzer.py` — walks the repository, detects file types, and parses Python `def` and `class` using `ast`
+  - `summarizer.py` — builds a prompt from the analysis and calls OpenAI (uses `OPENAI_API_KEY` from env)
+  - `visualizer.py` — generates a Graphviz `.gv` file and can render a PNG
+
+- `examples/sample_repo/` — small example repository to test the tool
+- `tests/` — pytest tests for core behavior (analyzer and summarizer)
+- `setup.py` & `requirements.txt` — packaging and dependencies
+- `.github/workflows/ci.yml` — CI job that installs deps and runs tests
+
+---
+
+## Quickstart
+
+1. Create a virtual environment and install:
 
 ```bash
 python -m venv .venv
@@ -43,82 +47,53 @@ pip install -r requirements.txt
 pip install -e .
 ```
 
-Analyze example repo:
+2. Run locally on the included example:
 
 ```bash
+# Optional: set your OpenAI API key in environment
+export OPENAI_API_KEY="sk-your_real_key_here"
+
 explain_repo --local ./examples/sample_repo
 ```
 
-Or analyze a remote repo:
-
-```bash
-explain_repo --url https://github.com/owner/repo.git
-```
-
-Tips: set `OPENAI_API_KEY` in your environment to enable summaries.
-
-```bash
-export OPENAI_API_KEY="sk-your_real_key_here"
-```
+3. Observe output:
+- A summary printed to the terminal
+- A `structure.gv` file (optionally `structure.png` if rendered with `--render`)
 
 ---
 
-## 📈 Make this repo discoverable (quick checklist)
+## Security
 
-- Add meaningful **GitHub topics** (e.g. `code-analysis`, `openai`, `graphviz`, `python`, `cli`) via the repo settings.
-- Add a short, SEO-friendly description and a clear README hero.
-- Add a short demo GIF and a social preview image (Open Graph) for better sharing.
-- Add CI badges and a version badge (publish a PyPI release when ready).
-- Promote on community channels (Hacker News, Reddit, Dev.to, Twitter/X) with a short, clear post and demo screenshot.
+- **Never** commit API keys or secrets. Use `OPENAI_API_KEY` (env var) or CI secrets for automated runs. This repository intentionally redacts example keys and includes a `.gitignore` to avoid committing local environment files.
 
 ---
 
-## 🧪 Testing & CI
+## Development & Testing
 
-We run tests on GitHub Actions via `.github/workflows/ci.yml`.
-
-Run locally:
+Run tests:
 
 ```bash
 pytest -q
 ```
 
----
-
-## 🤝 Contributing
-
-Contributions are welcome! Please:
-
-1. Fork the repo
-2. Create a branch for your change
-3. Add tests for new behavior
-4. Open a PR and reference the issue if there is one
-
-Also consider adding a short `CONTRIBUTING.md`, `CHANGELOG.md` and an issue/PR template for better community onboarding.
+Suggested development workflow:
+1. Fork and branch
+2. Add tests for new behavior
+3. Run `pytest` and ensure green
+4. Open PR
 
 ---
 
-## 📄 License
+## Contributing
 
-MIT © Acquibi — see `LICENSE`.
-
----
-
-## 📣 Outreach notes (for maintainers)
-
-- Create a short announcement post with a GIF (30–60s) showing the CLI and the generated summary.
-- Share code samples and a brief tutorial on Dev.to / Medium.
-- Submit a short demo to Hacker News and relevant subreddits (r/python, r/programming, r/opensource).
-- Add the PyPI release and announce it with a changelog and release notes.
+Contributions are welcome. Please add tests and a clear description of the change in PRs.
 
 ---
 
-If you want, I can:
-- create a polished demo GIF (recording + optimize),
-- add social preview image and GitHub Topics via the API, and
-- add a docs site (MkDocs) and GitHub Pages deployment.
+## License
 
-Would you like me to create the demo GIF and add topics now? :rocket:
+MIT © Acquibi
+
 
 
 ## 💻 Installation
