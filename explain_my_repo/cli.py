@@ -22,7 +22,8 @@ from .visualizer import visualize
 @click.option("--local", "-l", "local_path", help="Local path to a repository to analyze")
 @click.option("--output", "-o", "output", help="Output path for the diagram (without extension)", default="structure")
 @click.option("--render/--no-render", default=False, help="Render the diagram to PNG if Graphviz is available")
-def main(url, local_path, output, render):
+@click.option("--dry-run", is_flag=True, default=False, help="Simulate summary generation without calling OpenAI (dry run)")
+def main(url, local_path, output, render, dry_run):
     """explain_repo — analyze a repository and generate a summary + diagram."""
     if not url and not local_path:
         print(Panel("[red]Error[/red]: specify either --url or --local", title="explain_repo"))
@@ -42,7 +43,7 @@ def main(url, local_path, output, render):
         analysis = analyze_path(target)
 
         print("Generating summary (via OpenAI)...")
-        summary = summarize(analysis)
+        summary = summarize(analysis, dry_run=dry_run)
         print(Panel(summary, title="Repository summary"))
 
         print("Generating Graphviz diagram...")

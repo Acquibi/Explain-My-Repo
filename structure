@@ -1,0 +1,12 @@
+// Repository structure
+digraph {
+	rankdir=LR
+	"README.md" [label="README.md" shape=note]
+	"app.py" [label="app.py" shape=note]
+	"module/__init__.py" [label="__init__.py" shape=note]
+	"module/__pycache__/__init__.cpython-312.pyc" [label="__init__.cpython-312.pyc" shape=note]
+	"module/__pycache__/helper.cpython-312.pyc" [label="helper.cpython-312.pyc" shape=note]
+	"module/helper.py" [label="helper.py" shape=note]
+	"module/helper.py::Greeter" [label=Greeter fillcolor=lightblue shape=box style=filled]
+	"module/helper.py" -> "module/helper.py":"":Greeter
+}

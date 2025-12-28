@@ -135,6 +135,12 @@ explain_repo --local ./examples/sample_repo
 
 This will print a repository summary and generate a Graphviz file (by default `structure.gv`; add `--render` to generate a PNG if Graphviz is installed).
 
+Common options:
+
+* `--output / -o` : output base name for the diagram (default: `structure`)
+* `--render` : render the Graphviz diagram to PNG if Graphviz is available
+* `--dry-run` : simulate summary generation without calling OpenAI (useful for local tests or when no API key is available)
+
 ---
 
 ## OpenAI API Key Management
